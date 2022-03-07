@@ -18,6 +18,12 @@ shell 창에서 `python --version`을 입력했을 때, 아래와 같은 결과�
 
 최신 버전으로 설치해 주세요.
 
+### django 설치
+
+`pip install Django==3.2.12`
+
+LTS 버전으로 설치하겠습니다. 4.2 LTS는 2024년 릴리즈 예정입니다.
+
 ### vscode django extension 설치
 
 ![image-20220302202128633](README.assets/image-20220302202128633.png)
