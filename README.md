@@ -28,6 +28,10 @@ LTS 버전으로 설치하겠습니다. 4.2 LTS는 2024년 릴리즈 예정입�
 
 ![image-20220302202128633](README.assets/image-20220302202128633.png)
 
+### vscode sqlite extension 설치
+
+![image-20220307210030658](README.assets/image-20220307210030658.png)
+
 ### prettier 설정
 
 VScode에서 기본 제공되는 django html의 prettier는 매우 구립니다. `Unibeautify`를 설치해 주세요.
