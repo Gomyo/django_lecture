@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # 사용하기 위해서 등록을 해줍니다.
     # local apps
     'articles',
+    'pages',
     # 3rd party apps
     # django apps
     'django.contrib.admin',

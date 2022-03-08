@@ -34,3 +34,9 @@ def catch(request):
         "message": message,
     }
     return render(request, 'catch.html', context)
+
+def varRoute(request, name):
+    context = {
+        'name': name,
+    }
+    return render(request, 'varRoute.html', context)
