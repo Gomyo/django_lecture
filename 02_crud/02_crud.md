@@ -1,15 +1,16 @@
 [TOC]
 
-# 02_django_crud
+# Django - crud
 
-> `02_django_crud`
+## 목표
+
+Django를 사용해서 CRUD를 구현해 보겠습니다.
 
 **템플릿 폴더 구조 및 url 분리**
 
 - `articles/urls.py` 파일 생성
 
 - 프로젝트 폴더 url 설정
-
 
 <br>
 
@@ -249,7 +250,7 @@ def index(request):
 2. 데이터는 URL에 직접 노출되면 안된다. (우리가 주소창으로 접근하는 방식은 모두 GET 요청) query의 형태를 통해 DB schema를 유추할 수 있다.
   
 3. 모델(DB)을 건드리는 친구는 GET이 아닌 POST 요청! 왜? 중요하니까 **최소한의 신원 확인**이 필요하다!
-  
+
 
 <br>
 

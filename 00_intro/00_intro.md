@@ -1,4 +1,4 @@
-# Django - 1
+# Django - intro
 
 [TOC]
 
@@ -30,7 +30,7 @@ DB를 조작하려면 SQL을 알아야 하지만, 장고는 ORM(Object Relationa
 
 ### Flow
 
-![img](01.assets/basic-django.png)
+![img](00_intro.assets/basic-django.png)
 
 흐름을 정리해 보겠습니다.
 
@@ -53,6 +53,7 @@ python manage.py runserver # 서버 구동 확인
 ```
 
 ### firstpjt == package
+
 - `__init__.py`: 다른 파일들이 하나의 패키지임을 알 수 있게 해줍니다.
 - asgi.py django 3에서 새로 생긴 파일. 비동기적인 웹 서버를 연동할 때 사용하는 것이고, 딱히 쓰지 않을 거에요.
 - settings는 만든 어플리케이션을 등록하고, 미디어/스태틱 파일의 위치 등 각종 세팅값이 있고 많이 건드리는 부분이에요.
@@ -85,6 +86,7 @@ python manage.py startapp articles
 새로운 어플리케이션을 생성했습니다. articles의 파일을 살펴볼게요.
 
 - admin.py: 관리자 페이지를 커스텀하는 파일입니다.
+
   - /admin 쿼리로 관리자 페이지에 접속해 봅시다. 장고는 자체적으로 관리자 페이지를 지원하는데, 이 기능이 매우매우 강력합니다.
   - `python manage.py createsuperuser` 명령어를 통해 admin 계정을 생성할 수 있습니다.
 
@@ -129,7 +131,7 @@ root의 `settings.py`의 INSTALLED_APPS에 추가해 주기만 하면 됩니다.
 `{{ variable }}`
 
 - render()를 사용하여 views.py에서 정의한 변수를 template 파일로 넘겨 사용하는 것.
-- 변수명은  영어, 숫자와 밑줄(_)로 구성될 수 있으나 밑줄로는 시작할 수 없음.
+- 변수명은 영어, 숫자와 밑줄(\_)로 구성될 수 있으나 밑줄로는 시작할 수 없음.
   - 공백이나 구두점도 불가
 - dot(.) 를 사용하여 변수 속성에 접근할 수 있음
 - render()의 세번째 인자로 {'key': 'value'} 형태로 넘겨주며, key가 template에서 사용할 수 있는 변수명이 된다.
@@ -170,7 +172,7 @@ filters.html에 for 태그를 사용해 보겠습니다.
 {# lorem ipsum #}
 ```
 
-- django template에서 줄의 주석을 표현하기 위해 사용 
+- django template에서 줄의 주석을 표현하기 위해 사용
 - 한 줄 주석에만 사용할 수 있음
 - 여러 줄 주석은 {% comment %} {% endcomment %} 사이에 입력
 
@@ -198,7 +200,7 @@ bootstrap 네비게이션 바를 기본적으로 가지는 부모 템플릿을 �
 
 ~/templates/base.html 을 생성합니다. 그리고 기존의 index.html의 내용 중 필요한 부분이 어딘지 체크해 보겠습니다.
 
-![image-20220303200951438](01.assets/image-20220303200951438.png)
+![image-20220303200951438](00_intro.assets/image-20220303200951438.png)
 
 네모 친 부분만 필요하겠죠?
 
@@ -212,9 +214,9 @@ bootstrap 네비게이션 바를 기본적으로 가지는 부모 템플릿을 �
 
 BASE_DIR은 프로젝트의 root path를 가져오도록 기본적으로 설정되어 있습니다. 아래와 같이 되어 있기 때문에, 운영체제에 관계 없이 잘 가져올 수 있습니다.
 
-![image-20220303203159748](01.assets/image-20220303203159748.png)
+![image-20220303203159748](00_intro.assets/image-20220303203159748.png)
 
-![image-20220303202936114](01.assets/image-20220303202936114.png)
+![image-20220303202936114](00_intro.assets/image-20220303202936114.png)
 
 ### Django template system (feat. django 설계 철학)
 
@@ -228,16 +230,17 @@ BASE_DIR은 프로젝트의 root path를 가져오도록 기본적으로 설정�
 
 ### Data Throw & Catch (HTTP form - GET)
 
-다음으로 이번에는 데이터를 주고 받아 보도록 하겠습니다. 
+다음으로 이번에는 데이터를 주고 받아 보도록 하겠습니다.
 데이터를 주고받기 위해서는 `데이터를 보낼 view`, `데이터를 받을 view` 이렇게 두개가 필요합니다.
 
-throw - catch의 url을 추가하고, view를 추가합니다. 
+throw - catch의 url을 추가하고, view를 추가합니다.
 
-![image-20220304144048033](01.assets/image-20220304144048033.png)
+![image-20220304144048033](00_intro.assets/image-20220304144048033.png)
 
 throw에 `form action='/catch'`을 설정해 주면, 잘 받는 모습을 볼 수 있습니다.
 
 ### URL
+
 django에서 url을 더 깔끔하게 사용하는 방식으로 바꾸어 볼게요.
 
 #### App URL mapping - 각 app마다 url을 나누어서 관리하기
@@ -253,18 +256,18 @@ python manage.py startapp pages
 그리고 root의 url은 `include`를 import해 와서, 각각의 앱으로 path를 연결해 줍니다.
 그럼 기존에는 아래와 같던 조잡한 url에서,
 
-![image-20220304144457752](01.assets/image-20220304144457752.png)
+![image-20220304144457752](00_intro.assets/image-20220304144457752.png)
 
 아래와 같이 깔끔하게 바뀌게 됩니다.
 이제 articles/로 클라이언트의 리퀘스트가 들어오면 장고 서버는 articles에게 처리하라고 떠넘기게 됩니다. Proxy와 같아요.
 
-![image-20220304144557923](01.assets/image-20220304144557923.png)
+![image-20220304144557923](00_intro.assets/image-20220304144557923.png)
 
 유지보수가 간편해졌죠?
 
-![image-20220304144948188](01.assets/image-20220304144948188.png)
+![image-20220304144948188](00_intro.assets/image-20220304144948188.png)
 
-그런데, 이렇게 바꾸면 기존에 경로가`/filters`와 같이 url이 직접 작성되어 있던 앵커 태그가 오류가 나게 됩니다. 해결을 위해 `url tag`를 사용해 볼게요. 
+그런데, 이렇게 바꾸면 기존에 경로가`/filters`와 같이 url이 직접 작성되어 있던 앵커 태그가 오류가 나게 됩니다. 해결을 위해 `url tag`를 사용해 볼게요.
 
 #### Naming URL patterns
 
@@ -273,15 +276,15 @@ python manage.py startapp pages
 
 path에 name을 설정해 주겠습니다.
 
-![image-20220304145949668](01.assets/image-20220304145949668.png)
+![image-20220304145949668](00_intro.assets/image-20220304145949668.png)
 
 그럼 기존에 이랬던 것들을,
 
-![image-20220304145807786](01.assets/image-20220304145807786.png)
+![image-20220304145807786](00_intro.assets/image-20220304145807786.png)
 
 이렇게 바꿔서 사용하게 됩니다.
 
-![image-20220304150259087](01.assets/image-20220304150259087.png)
+![image-20220304150259087](00_intro.assets/image-20220304150259087.png)
 
 ### Variable routing
 
@@ -289,6 +292,6 @@ path에 name을 설정해 주겠습니다.
 
 `varRoute`라는 url, view, template을 추가해 줍니다. 이 경우에는 두 번째 인자로 name이라는 query를 받습니다. 이걸 고스란히 context로 넘겨 주겠습니다.
 
-![image-20220304145615485](01.assets/image-20220304145615485.png)
+![image-20220304145615485](00_intro.assets/image-20220304145615485.png)
 
 잘 나오네요!
