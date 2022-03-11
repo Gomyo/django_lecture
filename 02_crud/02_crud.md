@@ -5,6 +5,7 @@
 ## 목표
 
 Django를 사용해서 CRUD를 구현해 보겠습니다.
+`new, create` 함수를 사용해서 새로운 article을 create합니다.
 
 **템플릿 폴더 구조 및 url 분리**
 
@@ -201,7 +202,7 @@ def create(request):
 ```
 
 ```django
-<!-- templates/articles/index.html -->
+<!-- templates/articles/new.html -->
 
 {% extends 'base.html' %}
 
