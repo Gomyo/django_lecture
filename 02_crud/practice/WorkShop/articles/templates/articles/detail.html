@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+  <h1>DETAIL PAGE</h1>
+  <hr>
+  <p> {{ article.pk }}</p>
+  <p> {{ article.title }}</p>
+  <p> {{ article.content }}</p>
+  <p>작성일: {{ article.created_at|naturalday }}</p>
+  <p>수정일: {{ article.updated_at|naturaltime }}</p>
+  <hr>
+  <form action="{% url 'articles:edit' article.pk %}" method='POST'>
+    {% csrf_token %}
+    <input type="submit" value="EDIT">
+  </form>
+  <form action="{% url 'articles:delete' article.pk %}" method='POST'>
+    {% csrf_token %}
+    <input type="submit" value="DELETE">
+  </form>
+  <hr>
+  <a href="{% url 'articles:index' %}">[BACK]</a>
+{% endblock content %}
