@@ -12,6 +12,8 @@
 
 ### Static files 구성
 
+[STATICFILES_DIRS, STATIC_URL, STATIC_ROOT](https://blog.hannal.com/2015/04/start_with_django_webframework_06/)
+
 1. django.contrib.staticfiles 앱이 `INSTALLED_APPS`에 있는지 확인
 2. setting.py에 `STATIC_URL` 정의
 3. 템플릿에서 static 템플릿 태그를 사용하여 static file이 있는 상대경로를 빌드
@@ -111,18 +113,15 @@
   /* crud/static/stylesheets/style.css */
 
   h1 {
-      color: crimson;
+    color: crimson;
   }
   ```
-
 
 <br>
 
 **STATIC_URL 확인해보기**
 
 ![1](04_django_staticfiles.assets/1.jpg)
-
-
 
 - 개발자도구 - 네트워크 - 이미지파일 선택 - Request URL 확인
 
@@ -385,4 +384,3 @@ def update(request, pk):
   {% endif %}
 ...
 ```
-

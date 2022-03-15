@@ -2,6 +2,8 @@
 
 # 05_django_auth
 
+03_django_form 프로젝트를 베이스로 시작합니다.
+
 <br>
 
 ## Accounts
@@ -68,9 +70,15 @@ urlpatterns = [
 
 ## Authentication in Web requests
 
+- Django는 세션과 미들웨어를 사용하여 인증 시스템을 request 객체에 연결
+- 이를 통해 사용자를 나타내는 모든 요청에 request.user를 제공
+- 현재 사용자가 로그인하지 않은 경우 AnonymousUser 클래스의 인스턴스로 설정되며, 로그인했을 경우에는 User 클래스의 인스턴스로 설정됨
+
 ### Login
 
 - 로그인은 **`Session을 create 하는 것`**이다.
+- 유저에 관한 것도 CRUD의 흐름을 벗어나지 않는다. 유저를 생성하고, 조회하고, 수정하고, 삭제하는 같은 흐름을 공유한다.
+- 로그인할 경우, Django는 특정 session id를 포함하는 쿠키를 사용해서 각각의 브라우저와 사이트가 연결된 세션을 알아낸다. (세션 정보는 django DB의 django_session 테이블에 저장됨)
 
 <br>
 
@@ -94,6 +102,15 @@ urlpatterns = [
 
 - 즉, 로그인을 한다.
 
+- 로그인을 위해서는 request 객체와 User 객체가 필요하다. User 객체는 `get_user()` 메서드를 사용해서 가져올 수 있다.
+
+- 세션의 유지 시간은 settings에 설정하면 된다.
+
+  ```python
+  DAY_IN_SECONDS = 86400
+  SESSION_COOKIE_AGE = DAY_IN_SECONDS
+  ```
+
   ```python
   # accounts/urls.py
 
@@ -114,6 +131,8 @@ urlpatterns = [
   def login(request):
       if request.method == 'POST':
           form = AuthenticationForm(request, request.POST)
+          # Form의 두번째 파라미터는 data이기 때문에 생략 가능
+          # form = AuthenticationForm(request, data=request.POST)
           if form.is_valid():
               auth_login(request, form.get_user())
               return redirect('articles:index')
@@ -144,7 +163,9 @@ urlpatterns = [
 
 ````
 
-  - 로그인 후 브라우저와 DB에서 세션 확인
+  - createsuperuser 생성
+  - 로그인 후 브라우저와 DB에서 세션 확인 (Application tab > cookie)
+  - 2주 정도의 만료 기간을 받은 것을 알 수 있음
 
 <br>
 
@@ -166,6 +187,10 @@ urlpatterns = [
 ````
 
 <br>
+
+- 잘 나오는 것을 확인할 수 있다. sessionId를 삭제하고 새로고침하면 AnanymousUser로 바뀌는 것을 확인할 수 있다.
+
+- 여기서 request를 딱히 view 함수로 선언해서 return하지 않는데도 정상적으로 출력되는 이유는 django 내부적으로 자주 사용되는 context들을 내장하고 있기 때문이다. TEMPLATES의 OPTIONS를 보면 request context를 내장하고 있음을 알 수 있다. 같은 맥락에서 auth context를 이용해서 `{{ auth }}`라고만 해도 잘 나온다. 다만 명시적으로 request를 사용할 뿐.
 
 ---
 
@@ -520,6 +545,10 @@ def delete(request):
 >
 > https://github.com/django/django/blob/master/django/contrib/auth/forms.py#L142
 
+- UserChangeForm으로 만들어 보면 너무 많은 권한이 보입니다. 그래서 커스텀해서 사용해야 합니다.
+
+- 여기서 가져다 쓰는 model에는 User를 넣어야 하는데, User Class는 어떻게 생긴 걸까요? 수정 먼저 해보고 알아보겠습니다.
+
 ```python
 # accounts/urls.py
 
@@ -600,7 +629,7 @@ def update(request):
 - `User`를 직접 참조하는 대신`django.contrib.auth.get_user_model()` 을 사용하여 User model 을 참조해야 한다.
 - **이 함수는 현재 활성화(active)된 user model을 리턴**한다.
 - 커스텀한 유저 모델이 있을 경우는 커스텀 유저 모델, 그렇지 않으면 User를 참조
-  - 단순 User를 직접 참조하지 않는 이유
+  - 단순 User를 직접 참조하지 않는 이유. User 모델에 직접 참조하려고 한다면, 유저 모델을 커스텀했을 경우 추적하지 못할 수 있기 때문이다.
 
 <br>
 
@@ -616,11 +645,11 @@ def update(request):
 
 - 이번엔 User 클래스를 찾아가보자.
 
-  - https://github.com/django/django/blob/master/django/contrib/auth/models.py#L384
+  - https://github.com/django/django/blob/be80aa55ec120b3b6645b3efb77316704d7ad948/django/contrib/auth/models.py#L405
 
 - 그런데 User 클래스는 비어있고 `AbstractUser` 를 상속받고 있다. AbstractUser 를 다시 따라가보자.
 
-  - https://github.com/django/django/blob/master/django/contrib/auth/models.py#L316
+  - https://github.com/django/django/blob/master/django/contrib/auth/models.py#L334
 
 - `AbstractUser` 의 클래스 변수명들을 확인해보면 우리가 회원수정 페이지에서 봤던 필드들과 일치한다는 것을 할 수 있다.
 
