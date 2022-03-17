@@ -732,7 +732,6 @@ def update(request):
 > "암호 변경 시 세션 무효화 방지"
 >
 > - 비밀번호는 잘 변경되었으나 비밀번호가 변경 되면서 기존 세션과의 회원 인증 정보가 일치하지 않기 때문
-> - 비밀번호는 잘 변경되었으나 비밀번호가 변경 되면서 기존 세션과의 회원 인증 정보가 일치하지 않기 때문
 > - 현재 요청(current request)과 새 session hash가 파생 될 업데이트 된 사용자 객체를 가져와서 session hash를 적절하게 업데이트해 로그아웃을 막는다.
 >
 > https://docs.djangoproject.com/en/3.2/topics/auth/default/#session-invalidation-on-password-change
