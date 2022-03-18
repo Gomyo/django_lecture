@@ -1,7 +1,8 @@
 # 13_Workshop
+
 ## 투표 페이지 만들기
 
-![result](README.assets/result.PNG)
+![result](13_django_workshop.assets/result.PNG)
 
 **views.py**
 
@@ -87,58 +88,55 @@ class Comment(models.Model):
 
 ```
 
-
-
 **detail.html**
 
 ```html
-{% extends 'base.html' %}
-{% load bootstrap5 %}
-
-{% block content %}
-  <h3>DETAIL</h3>
-  <a href="{% url 'either:index' %}">BACK</a>
-  <hr>
-  <!-- 투표현황 bar -->
-  <h2>{{ vote.title }}</h2>
-  총 투표 수 : {{ total }}
-  <div class="d-flex justify-content-between">
-    <p class="text-primary">{{ vote.blue }}</p>
-    <p class="text-danger">{{ vote.red }}</p>
+{% extends 'base.html' %} {% load bootstrap5 %} {% block content %}
+<h3>DETAIL</h3>
+<a href="{% url 'either:index' %}">BACK</a>
+<hr />
+<!-- 투표현황 bar -->
+<h2>{{ vote.title }}</h2>
+총 투표 수 : {{ total }}
+<div class="d-flex justify-content-between">
+  <p class="text-primary">{{ vote.blue }}</p>
+  <p class="text-danger">{{ vote.red }}</p>
+</div>
+<div class="progress">
+  <div
+    class="progress-bar progress-bar-striped progress-bar-animated"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    style="width: {{ blue }}%"
+  >
+    {{ blue }} %
   </div>
-  <div class="progress">
-  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{ blue }}%">{{ blue }} %</div>
-  <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{ red }}%">{{ red }} %</div>
+  <div
+    class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    style="width: {{ red }}%"
+  >
+    {{ red }} %
   </div>
+</div>
 
-  <hr>
-  <!-- 댓글작성 form -->
-  <hr>
-  <form action="{% url 'either:create_comment' vote.pk %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form comment_form %}
-    <input type="submit" value="작성" class="btn btn-warning">
-  </form>
-  <hr>
-  <!-- 댓글목록-->
-  {% if comments %}
-    {% for comment in comments %}
-      {% if comment.pick == 'RED' %}
-        <div class="alert alert-danger">
-          {{ comment }}
-        </div>
-      {% endif %}
-    {% endfor %}
-    <hr>
-    {% for comment in comments %}
-      {% if comment.pick == 'BLUE' %}
-        <div class="alert alert-primary">
-          {{ comment }}
-        </div>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endblock content %}
-
+<hr />
+<!-- 댓글작성 form -->
+<hr />
+<form action="{% url 'either:create_comment' vote.pk %}" method="POST">
+  {% csrf_token %} {% bootstrap_form comment_form %}
+  <input type="submit" value="작성" class="btn btn-warning" />
+</form>
+<hr />
+<!-- 댓글목록-->
+{% if comments %} {% for comment in comments %} {% if comment.pick == 'RED' %}
+<div class="alert alert-danger">{{ comment }}</div>
+{% endif %} {% endfor %}
+<hr />
+{% for comment in comments %} {% if comment.pick == 'BLUE' %}
+<div class="alert alert-primary">{{ comment }}</div>
+{% endif %} {% endfor %} {% endif %} {% endblock content %}
 ```
-
