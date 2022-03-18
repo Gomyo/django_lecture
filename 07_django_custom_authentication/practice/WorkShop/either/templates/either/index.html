@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for vote in votes %}
+    <h4>{{ vote.title }}</h4>
+    <p>{{ vote.blue }} vs {{ vote.red }}</p>
+    <a href="{% url 'either:detail' vote.pk %}">결과보기</a>
+  {% endfor %}
+{% endblock content %}
