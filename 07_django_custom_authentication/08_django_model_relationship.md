@@ -351,3 +351,9 @@ $ python manage.py migrate
   ```
 
   - 본인 댓글에 대한 삭제 버튼을 볼 수 있도록 수정한다.
+
+## humanize
+
+날짜, 숫자 등을 사람이 보기 좋게 바꿀 수가 있다. (human touch)
+장고의 `django.contrib.humanize`를 INSTALLED_APPS에 추가하고,
+`{% load humanize %}` 한 뒤, 원하는 필드를 사용하면 된다.

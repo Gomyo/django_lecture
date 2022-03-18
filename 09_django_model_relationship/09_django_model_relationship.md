@@ -2,9 +2,11 @@
 
 # 09_django_model_relationship
 
+99_mtm을 먼저 실습하고 진행하겠습니다.
+
 ## ManyToManyField
 
-> https://docs.djangoproject.com/en/3.1/ref/models/fields/#manytomanyfield
+> https://docs.djangoproject.com/en/3.2/ref/models/fields/#manytomanyfield
 
 - M:N(이하 다대다) 관계를 나타내기 위해 사용하는 필드
 
@@ -30,7 +32,7 @@
 
   ```python
   from django.db import models
-  
+
   class Person(models.Model):
       friends = models.ManyToManyField('self')
   ```
@@ -83,7 +85,7 @@
 
 <br>
 
-------
+---
 
 <br>
 
@@ -106,6 +108,8 @@ $ python manage.py makemigrations
 
 <br>
 
+- **이렇게 하면 에러가 날 것이다. 글을 작성한/글을 좋아한 둘 모두의 경우, article_set이라는 manager 이름이 중복되어 crash되었기 때문!**
+
 - **현 상황에서는 `related_name` 작성이 필수**
   - M:N 관계 설정 시에 `related_name` 이 없다면 자동으로 `.article_set` 매니저를 사용할 수 있도록 하는 데 이 매니저는 이미 이전 1:N(User:Article) 관계에서 사용 중인 매니저이다.
   - user가 작성한 글들(`user.article_set`)과 user가 좋아요를 누른 글(`user.article_set`)을 django는 구분할 수 없게 된다.
@@ -123,15 +127,14 @@ $ python manage.py makemigrations
 
 **좋아요 구현**
 
-> https://docs.djangoproject.com/en/3.1/ref/models/querysets/#filter
+> https://docs.djangoproject.com/en/3.2/ref/models/querysets/#filter
 >
-> https://docs.djangoproject.com/en/3.1/ref/models/querysets/#django.db.models.query.QuerySet.exists
+> https://docs.djangoproject.com/en/3.2/ref/models/querysets/#django.db.models.query.QuerySet.exists
 
 - `exists()`
-  - 최소한 하나의 레코드가 존재하는지 여부를 확인하여 알려 준다. 
+  - 최소한 하나의 레코드가 존재하는지 여부를 확인하여 알려 준다.
 - 쿼리셋 cache를 만들지 않으면서 특정 레코드가 존재하는지 검사한다.
   - 결과 전체가 필요하지 않은 경우 유용하다.
-  
 
 ```python
 # articles/urls.py
@@ -160,6 +163,7 @@ def likes(request, article_pk):
 ```
 
 ```django
+좋아요 버튼 만들기
 <!-- articles/index.html -->
 
 {% extends 'base.html' %}
@@ -330,6 +334,7 @@ def follow(request, user_pk):
     if request.user.is_authenticated:
         person = get_object_or_404(get_user_model(), pk=user_pk)
         if person != request.user:
+            # 여기서 filter인 이유는, 빈 쿼리셋이어도 리턴받아야 하기 때문. get을 쓰면 그냥 에러가 날 수 있다.
             if person.followers.filter(pk=request.user.pk).exists():
             # if request.user in person.followers.all():
                 person.followers.remove(request.user)
@@ -346,7 +351,7 @@ def follow(request, user_pk):
 ```django
 <!-- accounts/profile.html -->
 
-<div> 
+<div>
   <div>
     팔로잉 : {{ person.followings.all|length }} / 팔로워 : {{ person.followers.all|length }}
   </div>
@@ -369,7 +374,7 @@ def follow(request, user_pk):
 
 **`with` template tag**
 
->  https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#with
+> https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#with
 
 - 더 간단한 이름으로 복잡한 변수를 저장한다.
 - 주로 데이터베이스에 중복으로 여러번 엑세스 할 때 유용하게 사용한다.
@@ -379,7 +384,7 @@ def follow(request, user_pk):
 <!-- accounts/profile.html -->
 
 {% with followings=person.followings.all followers=person.followers.all %}
-  <div> 
+  <div>
     <div>
       팔로잉 : {{ followings|length }} / 팔로워 : {{ followers|length }}
     </div>
@@ -399,4 +404,4 @@ def follow(request, user_pk):
 {% endwith %}
 ```
 
-------
+---

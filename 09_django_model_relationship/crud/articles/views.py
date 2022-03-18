@@ -83,7 +83,7 @@ def update(request, pk):
         'article': article,
     }
     return render(request, 'articles/update.html', context)
-        
+
 
 @require_POST
 def comments_create(request, pk):
@@ -128,11 +128,11 @@ def likes(request, article_pk):
 
 """
 # [참고] 쿼리셋 효과적으로 사용하기
-# https://docs.djangoproject.com/en/3.1/topics/db/queries/#querysets-are-lazy
-# https://docs.djangoproject.com/en/3.1/ref/models/querysets/#when-querysets-are-evaluated
-# https://docs.djangoproject.com/en/3.1/topics/db/queries/#caching-and-querysets
+# https://docs.djangoproject.com/en/3.2/topics/db/queries/#querysets-are-lazy
+# https://docs.djangoproject.com/en/3.2/ref/models/querysets/#when-querysets-are-evaluated
+# https://docs.djangoproject.com/en/3.2/topics/db/queries/#caching-and-querysets
 
-# 실제 쿼리셋을 만드는 작업에는 DB 작업이 포함되지 않음 
+# 실제 쿼리셋을 만드는 작업에는 DB 작업이 포함되지 않음
 q = Entry.objects.filter(title__startswith="What")
 q = q.filter(created_at__lte=datetime.date.today())
 q = q.exclude(context__icontains="food")
@@ -166,7 +166,7 @@ print(queryset[5]) # Queries the database again
 
 # 위 상황을 방지하고 싶을 때
 queryset = Entry.objects.all()
-[entry for entry in queryset] # Queries the database (전체 쿼리셋을 평가 시켜버림)
+[entry for entry in queryset] # Queries the database (인덱스에 접근하기 전에 전체 쿼리셋을 평가 시켜버림)
 print(queryset[5]) # Uses cache
 print(queryset[5]) # Uses cache
 
@@ -177,7 +177,7 @@ like_set = article.like_users.filter(pk=request.user.pk)
 if like_set: # 평가
     # 쿼리셋의 전체 결과가 필요하지 않은 상왕임에도
     # ORM은 전체 결과를 가져옴
-    article.like_users.remove(request.user) 
+    article.like_users.remove(request.user)
 
 # 개선 1
 # exists() 쿼리셋 캐시를 만들지 않으면서 특정 레코드가 있는지 검사
