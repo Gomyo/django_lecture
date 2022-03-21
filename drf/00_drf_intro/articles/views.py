@@ -26,6 +26,7 @@ def article_json_1(request):
                 'content': article.content,
             }
         )
+    # JsonResponse의 첫번째 인자의 Type이 Dictionary가 아니면 safe=False
     return JsonResponse(articles_json, safe=False)
 
 
